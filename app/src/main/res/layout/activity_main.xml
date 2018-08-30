@@ -59,13 +59,6 @@
 
             </RelativeLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/ic_left_arrow"
-                android:padding="10dp"/>
-
 
         </RelativeLayout>
 
@@ -258,6 +251,49 @@
     </android.support.v7.widget.RecyclerView>
 
     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <com.github.florent37.arclayout.ArcLayout
+            android:id="@+id/diagonalLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:elevation="20dp"
+            app:arc_cropDirection="cropOutside"
+            app:arc_position="top"
+            app:arc_height="45dp"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fff">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/basket_empty"
+                    android:text="Basket Is Empty"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/gray"/>
+
+            </RelativeLayout>
+
+        </com.github.florent37.arclayout.ArcLayout>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/rec2">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -276,5 +312,15 @@
             android:background="@drawable/circle2_txt"/>
 
     </RelativeLayout>
+
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/back"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/ic_left_arrow"
+        android:padding="10dp"/>
 
 </RelativeLayout>

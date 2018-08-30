@@ -8,10 +8,12 @@ import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -26,6 +28,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,7 +36,14 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.rec)
     RecyclerView recyclerView;
 
+    @BindView(R.id.rec2)
+    RecyclerView recyclerViewOrder;
+
     private FoodAdapter adapter;
+    private OrderAdapter orderAdapter;
+
+    private List<Food> list = new ArrayList<>();
+    private List<Food> orderList = new ArrayList<>();
 
     @BindView(R.id.textSwitcher)
     TextSwitcher mSwitcherCompanyName;
@@ -65,11 +75,10 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.basket_size)
     TextView BasketTextView;
 
-    private static final String TAG = "MainActivity";
+    @BindView(R.id.basket_empty)
+    TextView BasketEmpty;
 
     private TurnLayoutManager layoutManager;
-
-    List<Food> list = new ArrayList<>();
 
     private int price = 1;
 
@@ -83,6 +92,23 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setupTextSwitcher();
         setupRecyclerview();
+        setupRecyclerviewOrder();
+    }
+
+    private void setupRecyclerviewOrder() {
+        orderAdapter = new OrderAdapter(orderList , this);
+        recyclerViewOrder.setAdapter(orderAdapter);
+
+        TurnLayoutManager layoutManagerOrder = new TurnLayoutManager(this,
+                TurnLayoutManager.Gravity.END,
+                TurnLayoutManager.Orientation.HORIZONTAL,
+                1500,
+                50,
+                true);
+
+        recyclerViewOrder.setLayoutManager(layoutManagerOrder);
+
+
     }
 
     private void setupTextSwitcher() {
@@ -113,6 +139,8 @@ public class MainActivity extends AppCompatActivity {
                 if (backGround)
                     myText.setBackground(getResources().getDrawable(R.drawable.rectangle_background));
                 myText.setTextColor(TextColor);
+                myText.setEllipsize(TextUtils.TruncateAt.END);
+                myText.setMaxLines(1);
                 return myText;
             }
         });
@@ -121,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupRecyclerview() {
         DataFakeGenerator dataFakeGenerator = new DataFakeGenerator();
         list = dataFakeGenerator.foods();
-        adapter = new FoodAdapter(list);
+        adapter = new FoodAdapter(list, this);
         recyclerView.setAdapter(adapter);
         layoutManager = new TurnLayoutManager(this,
                 TurnLayoutManager.Gravity.START,
@@ -135,6 +163,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.getLayoutManager().scrollToPosition(50);
         ItemTouchHelper ith = new ItemTouchHelper(ithCallback);
         ith.attachToRecyclerView(recyclerView);
+        ItemTouchHelper ithOrder = new ItemTouchHelper(ithCallbackorder);
+        ithOrder.attachToRecyclerView(recyclerViewOrder);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             boolean scrolled;
@@ -191,35 +221,64 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ItemTouchHelper.Callback ithCallback = new ItemTouchHelper.Callback() {
-
         public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
             Collections.swap(list, viewHolder.getAdapterPosition(), target.getAdapterPosition());
             adapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
             return true;
         }
-
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            //TODO
-            Log.e(TAG, "onSwiped: viewHolder" + viewHolder.getLayoutPosition());
             basketSize = ++basketSize;
             BasketTextView.setText(String.valueOf(basketSize));
+            if (basketSize == 0){
+                BasketEmpty.setVisibility(View.VISIBLE);
+            } else {
+                BasketEmpty.setVisibility(View.GONE);
+            }
 
-            new CountDownTimer(700, 700) { //40000 milli seconds is total time, 1000 milli seconds is time interval
+            Food food = list.get(viewHolder.getLayoutPosition());
+            orderList.add(food);
+            orderAdapter.notifyDataSetChanged();
+
+            new CountDownTimer(700, 700) {
 
                 public void onTick(long millisUntilFinished) {
                 }
-
                 public void onFinish() {
                     adapter.notifyDataSetChanged();
                 }
             }.start();
         }
-
-        //defines the enabled move directions in each state (idle, swiping, dragging).
         @Override
         public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
             return makeFlag(ItemTouchHelper.ACTION_STATE_SWIPE, ItemTouchHelper.DOWN);
+        }
+    };
+
+    private ItemTouchHelper.Callback ithCallbackorder = new ItemTouchHelper.Callback() {
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            Collections.swap(list, viewHolder.getAdapterPosition(), target.getAdapterPosition());
+            adapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+            return true;
+        }
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            basketSize = --basketSize;
+            BasketTextView.setText(String.valueOf(basketSize));
+            if (basketSize == 0){
+                BasketEmpty.setVisibility(View.VISIBLE);
+            } else {
+                BasketEmpty.setVisibility(View.GONE);
+            }
+
+            Food food = orderList.get(viewHolder.getLayoutPosition());
+            orderList.remove(food);
+            orderAdapter.notifyItemRemoved(viewHolder.getLayoutPosition());
+        }
+
+        @Override
+        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            return makeFlag(ItemTouchHelper.ACTION_STATE_SWIPE, ItemTouchHelper.UP);
         }
     };
 
@@ -235,5 +294,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @OnClick(R.id.back)
+    void back(){
+        finish();
     }
 }
