@@ -8,13 +8,11 @@ import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -78,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.basket_empty)
     TextView BasketEmpty;
 
-    private TurnLayoutManager layoutManager;
+    private LayoutManager layoutManager;
 
     private int price = 1;
 
@@ -99,9 +97,9 @@ public class MainActivity extends AppCompatActivity {
         orderAdapter = new OrderAdapter(orderList , this);
         recyclerViewOrder.setAdapter(orderAdapter);
 
-        TurnLayoutManager layoutManagerOrder = new TurnLayoutManager(this,
-                TurnLayoutManager.Gravity.END,
-                TurnLayoutManager.Orientation.HORIZONTAL,
+        LayoutManager layoutManagerOrder = new LayoutManager(this,
+                LayoutManager.Gravity.END,
+                LayoutManager.Orientation.HORIZONTAL,
                 1500,
                 50,
                 true);
@@ -151,9 +149,9 @@ public class MainActivity extends AppCompatActivity {
         list = dataFakeGenerator.foods();
         adapter = new FoodAdapter(list, this);
         recyclerView.setAdapter(adapter);
-        layoutManager = new TurnLayoutManager(this,
-                TurnLayoutManager.Gravity.START,
-                TurnLayoutManager.Orientation.HORIZONTAL,
+        layoutManager = new LayoutManager(this,
+                LayoutManager.Gravity.START,
+                LayoutManager.Orientation.HORIZONTAL,
                 1000,
                 300,
                 true);

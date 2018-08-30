@@ -8,7 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-public class TurnLayoutManager extends LinearLayoutManager {
+public class LayoutManager extends LinearLayoutManager {
 
     private static final int MIN_RADIUS = 0;
     private static final int MIN_PEEK = 0;
@@ -40,7 +40,7 @@ public class TurnLayoutManager extends LinearLayoutManager {
     private boolean rotate;
     private Point center;
 
-    public TurnLayoutManager(Context context, @Gravity int gravity, @Orientation int orientation, @Dimension int radius, @Dimension int peekDistance, boolean rotate) {
+    public LayoutManager(Context context, @Gravity int gravity, @Orientation int orientation, @Dimension int radius, @Dimension int peekDistance, boolean rotate) {
         super(context, orientation, false);
         this.gravity = gravity;
         this.radius = Math.max(radius, MIN_RADIUS);
