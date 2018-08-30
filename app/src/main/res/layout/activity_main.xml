@@ -25,6 +25,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/toolbartxt"
                 android:layout_marginTop="5dp"
                 android:text="FOOD"
                 android:layout_centerHorizontal="true"
@@ -33,13 +34,30 @@
                 android:textStyle="bold"
                 android:textColor="#ffffff"/>
 
-            <ImageView
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="10dp"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/ic_basket"
                 android:layout_alignParentRight="true"
-                android:padding="10dp"/>
+                android:layout_marginLeft="50dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_basket"/>
+
+                <TextView
+                    android:layout_width="15.0dp"
+                    android:layout_height="15.0dp"
+                    android:id="@+id/basket_size"
+                    android:textColor="@color/orange"
+                    android:textSize="12dp"
+                    android:gravity="center"
+                    android:text="0"
+                    android:background="@drawable/circle_txt"/>
+
+            </RelativeLayout>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -56,7 +74,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="270dp">
+        android:layout_marginTop="290dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -238,5 +256,25 @@
         android:id="@+id/rec">
 
     </android.support.v7.widget.RecyclerView>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="55dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="50dp">
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/price"
+            android:textColor="#fff"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:background="@drawable/circle2_txt"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

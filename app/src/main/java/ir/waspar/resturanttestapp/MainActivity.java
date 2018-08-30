@@ -1,5 +1,7 @@
 package ir.waspar.resturanttestapp;
 
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -57,11 +59,21 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.textSwitcher_kKol)
     TextSwitcher mSwitcherKKAL;
 
+    @BindView(R.id.price)
+    TextView textView;
+
+    @BindView(R.id.basket_size)
+    TextView BasketTextView;
+
     private static final String TAG = "MainActivity";
 
     private TurnLayoutManager layoutManager;
 
     List<Food> list = new ArrayList<>();
+
+    private int price = 1;
+
+    private int basketSize = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,7 +171,23 @@ public class MainActivity extends AppCompatActivity {
             mSwitcherTime.setText(String.valueOf(list.get(position).getCookTime()));
             mSwitcherIngredient.setText(String.valueOf(list.get(position).getMaterials().size()));
             mSwitcherKKAL.setText(String.valueOf(list.get(position).getCalory()));
+            setPriceVariable(price , list.get(position).getPrice() , textView);
         }
+    }
+
+    private void setPriceVariable(final int oldPrice , final int newPrice , final TextView textView) {
+
+        ValueAnimator animator = ValueAnimator.ofInt(oldPrice, newPrice);
+        animator.setDuration(1000);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @SuppressLint("SetTextI18n")
+            public void onAnimationUpdate(ValueAnimator animation) {
+                textView.setText(animation.getAnimatedValue().toString() + " $");
+                price = newPrice;
+            }
+        });
+        animator.start();
+
     }
 
     private ItemTouchHelper.Callback ithCallback = new ItemTouchHelper.Callback() {
@@ -174,6 +202,8 @@ public class MainActivity extends AppCompatActivity {
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
             //TODO
             Log.e(TAG, "onSwiped: viewHolder" + viewHolder.getLayoutPosition());
+            basketSize = ++basketSize;
+            BasketTextView.setText(String.valueOf(basketSize));
 
             new CountDownTimer(700, 700) { //40000 milli seconds is total time, 1000 milli seconds is time interval
 

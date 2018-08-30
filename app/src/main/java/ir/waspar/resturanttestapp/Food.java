@@ -10,16 +10,26 @@ class Food {
     private int Calory;
     private int Weight;
     private int CookTime;
+    private int Price;
     private List<String> Materials;
 
-    Food(int id, String provider, String name, int calory, int weight, int cookTime, List<String> materials) {
+    Food(int id, String provider, String name, int calory, int weight, int cookTime, int price , List<String> materials) {
         ID = id;
         Provider = provider;
         Name = name;
         Calory = calory;
         Weight = weight;
         CookTime = cookTime;
+        Price = price;
         Materials = materials;
+    }
+
+    public int getPrice() {
+        return Price;
+    }
+
+    public void setPrice(int price) {
+        Price = price;
     }
 
     public int getID() {

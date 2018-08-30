@@ -10,13 +10,13 @@ public class DataFakeGenerator {
         List<Food> list = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             Food food = food();
-            list.add(new Food(i+1 , food.getProvider() , food.getName() , food.getCalory() , food.getWeight() , food.getCookTime() , food.getMaterials() ));
+            list.add(new Food(i+1 , food.getProvider() , food.getName() , food.getCalory() , food.getWeight() , food.getCookTime() , food.getPrice() , food.getMaterials() ));
         }
         return list;
     }
 
     private Food food(){
-        Food food = new Food(0 , foodProvider()  , foodName() , getRandomNumberInRange(1 , 200) , getRandomNumberInRange(100 , 800) , getRandomNumberInRange(10 , 30) , foodMaterials());
+        Food food = new Food(0 , foodProvider()  , foodName() , getRandomNumberInRange(1 , 200) , getRandomNumberInRange(100 , 800) , getRandomNumberInRange(10 , 30) , getRandomNumberInRange(5 , 50) , foodMaterials());
         return food;
     }
 
