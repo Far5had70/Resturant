@@ -19,11 +19,9 @@ import android.view.WindowManager;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -105,8 +103,6 @@ public class MainActivity extends AppCompatActivity {
                 true);
 
         recyclerViewOrder.setLayoutManager(layoutManagerOrder);
-
-
     }
 
     private void setupTextSwitcher() {
